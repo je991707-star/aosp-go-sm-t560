@@ -1,0 +1,9 @@
+# 白名單：AOSP 原始碼、out/、build.log 一律不追蹤，只追蹤根目錄文件與 local manifest
+/*
+!/.gitignore
+!/CLAUDE.md
+!/AGENT.md
+!/Readme_Architecture.md
+!/.repo/
+/.repo/*
+!/.repo/local_manifests/

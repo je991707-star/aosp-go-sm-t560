@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SM-T560 (gtelwifi, SC7730SE) on LineageOS 16.0；remote "github" 由 LineageOS 主 manifest 定義 -->
+<manifest>
+  <project path="device/samsung/gtelwifi" name="gtel3g/android_device_samsung_gtelwifi" remote="github" revision="lineage-16.0" clone-depth="1" />
+  <project path="vendor/samsung/gtelwifi" name="gtel3g/android_vendor_samsung_gtelwifi" remote="github" revision="lineage-16.0" clone-depth="1" />
+  <!-- 路徑須為 kernel/samsung/gtel3g（BoardConfig TARGET_KERNEL_SOURCE），內含 gtelwifi_defconfig -->
+  <project path="kernel/samsung/gtel3g" name="gtel3g/android_kernel_samsung_gtel3g" remote="github" revision="lineage-16.0" clone-depth="1" />
+  <project path="device/samsung/scx35-common" name="gtel3g/android_device_samsung_scx35-common" remote="github" revision="lineage-16.0" clone-depth="1" />
+  <project path="hardware/sprd" name="gtel3g/android_hardware_sprd" remote="github" revision="lineage-16.0" clone-depth="1" />
+  <!-- stlport 無 lineage-16.0 分支，上游 gtel3g manifest 亦使用 15.1 -->
+  <project path="external/stlport" name="LineageOS/android_external_stlport" remote="github" revision="lineage-15.1" clone-depth="1" />
+</manifest>
