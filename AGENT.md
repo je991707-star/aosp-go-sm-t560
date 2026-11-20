@@ -80,12 +80,12 @@
            <item>softap0</item>
        </string-array>
        <!-- 允許無 SIM 卡平板啟動熱點，跳過電信商驗證 -->
-       <string-array translatable="false" name="config_tether_upstream_types">
+       <integer-array translatable="false" name="config_tether_upstream_types">
            <item>0</item>
            <item>1</item>
            <item>5</item>
            <item>7</item>
-       </string-array>
+       </integer-array>
    </resources>
    ```
    - 同時在 `PRODUCT_PROPERTY_OVERRIDES` 中加入 `net.tethering.noprovisioning=true`。
@@ -114,7 +114,7 @@
      CONFIG_NETFILTER=y
      CONFIG_NF_NAT=y
      CONFIG_IP_NF_IPTABLES=y
-     CONFIG_IP_NF_NAT=y
+     CONFIG_NF_NAT_IPV4=y   # Linux 3.10 無 CONFIG_IP_NF_NAT，由此選項提供 IPv4 NAT
      CONFIG_IP_NF_TARGET_MASQUERADE=y
      ```
 
