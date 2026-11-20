@@ -9,6 +9,7 @@
 ## 原始碼基底
 - `repo init -u https://github.com/LineageOS/android.git -b lineage-16.0 --depth=1`（Android 9，AOSP tag `android-9.0.0_r46`）。
 - 編譯目標 `lineage_gtelwifi-userdebug`，產物為 `make bacon` 的刷機包。
+- `external/chromium-webview/prebuilt/*` 以 Git LFS 存放 `webview.apk`，容器須安裝 `git-lfs`；只對 `arm` 執行過 `git lfs pull`（裝置為 32-bit ARM），其餘架構保留 LFS 指標檔。
 
 ## 裝置倉庫（`.repo/local_manifests/gtelwifi.xml`）
 所有 `gtel3g/*` 倉庫皆來自 GitHub `gtel3g` 組織，分支 `lineage-16.0`，`clone-depth="1"`。`github` remote 沿用 LineageOS 主 manifest 的定義（重複定義會讓 `repo init` 失敗）。
