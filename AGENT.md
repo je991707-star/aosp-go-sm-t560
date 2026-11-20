@@ -1,7 +1,7 @@
 # 專案說明：SM-T560 (gtelwifi) LineageOS 16.0 Go 輕量化 + SoftAP（Wi-Fi 熱點）編譯
 
 ## 1. 執行環境架構（極重要，請優先閱讀）
-- **你（Claude Code）目前運行在 BazziteOS 宿主機上**，而所有編譯工具（Python 2.7、Python 3.6（`repo` 啟動器需要）、OpenJDK 8、`repo`、`git-lfs`、`make`、`ccache`）都安裝在名為 **`aosp8` 的 Distrobox 容器（Ubuntu 18.04）** 內部。
+- **你（Claude Code）目前運行在 BazziteOS 宿主機上**，而所有編譯工具（Python 2.7、Python 3.6（`repo` 啟動器需要）、OpenJDK 8、`repo`、`git-lfs`、ImageMagick（Lineage 開機動畫產生器需要 `mogrify`）、`make`、`ccache`）都安裝在名為 **`aosp8` 的 Distrobox 容器（Ubuntu 18.04）** 內部。
 - 宿主機與容器共享完全相同的檔案系統路徑（`/home/h97m/Projects/aosp-go-sm-t560`）。你可以直接在宿主機讀取或編輯檔案，**但所有終端機指令、git/repo 操作與編譯命令，都必須包裝在 `distrobox enter aosp8` 裡面執行**，範例如下：
   ```bash
   distrobox enter aosp8 -- bash -lc 'cd /home/h97m/Projects/aosp-go-sm-t560 && <你的指令>'

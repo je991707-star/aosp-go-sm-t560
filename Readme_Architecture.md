@@ -8,7 +8,7 @@
 
 ## 原始碼基底
 - `repo init -u https://github.com/LineageOS/android.git -b lineage-16.0 --depth=1`（Android 9，AOSP tag `android-9.0.0_r46`）。
-- 編譯目標 `lineage_gtelwifi-userdebug`，產物為 `make bacon` 的刷機包。
+- 編譯目標 `lineage_gtelwifi-userdebug`，產物為 `make bacon` 的刷機包。`vendor/lineage/bootanimation/Android.mk` 在 kati 階段要求主機有 ImageMagick（`mogrify`），缺少時直接中止。
 - 裝置子倉庫的修改放在 `repo start` 建立的 `gtelwifi-go` 分支（`device/samsung/gtelwifi`、`device/samsung/scx35-common`），避免 `repo sync` 覆蓋。
 - `vendorsetup.sh` 在 `source build/envsetup.sh` 時會把設備樹 `patches/` 直接套用到 `frameworks/base`、`packages/providers/MediaProvider` 工作目錄（未 commit，屬上游設計，勿提交）。
 - `external/chromium-webview/prebuilt/*` 以 Git LFS 存放 `webview.apk`，容器須安裝 `git-lfs`；只對 `arm` 執行過 `git lfs pull`（裝置為 32-bit ARM），其餘架構保留 LFS 指標檔。
