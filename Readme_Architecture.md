@@ -9,6 +9,7 @@
 ## 原始碼基底
 - `repo init -u https://github.com/LineageOS/android.git -b lineage-16.0 --depth=1`（Android 9，AOSP tag `android-9.0.0_r46`）。
 - 編譯目標 `lineage_gtelwifi-userdebug`，產物為 `make bacon` 的刷機包。`vendor/lineage/bootanimation/Android.mk` 在 kati 階段要求主機有 ImageMagick（`mogrify`），缺少時直接中止。
+- `vendor/lineage/config/BoardConfigKernel.mk` 對內核編譯加上 `-j$(nproc)`（設備樹無法覆寫），編譯前需 `export OMP_NUM_THREADS=6` 讓 `nproc` 回報 6，維持 `-j6` 上限。
 - 裝置子倉庫的修改放在 `repo start` 建立的 `gtelwifi-go` 分支（`device/samsung/gtelwifi`、`device/samsung/scx35-common`），避免 `repo sync` 覆蓋。
 - `vendorsetup.sh` 在 `source build/envsetup.sh` 時會把設備樹 `patches/` 直接套用到 `frameworks/base`、`packages/providers/MediaProvider` 工作目錄（未 commit，屬上游設計，勿提交）。
 - `external/chromium-webview/prebuilt/*` 以 Git LFS 存放 `webview.apk`，容器須安裝 `git-lfs`；只對 `arm` 執行過 `git lfs pull`（裝置為 32-bit ARM），其餘架構保留 LFS 指標檔。
@@ -23,6 +24,7 @@
 | `kernel/samsung/gtel3g` | `gtel3g/android_kernel_samsung_gtel3g` | lineage-16.0 | SC7730SE 核心（Linux 3.10.108），`gtelwifi_defconfig`；路徑由 `BoardConfig.mk` 的 `TARGET_KERNEL_SOURCE` 決定 |
 | `device/samsung/scx35-common` | `gtel3g/android_device_samsung_scx35-common` | lineage-16.0 | SPRD scx35 平台共用設定（`BoardConfigCommon.mk`、`common.mk`、`sepolicy/`、`overlay/`） |
 | `hardware/sprd` | `gtel3g/android_hardware_sprd` | lineage-16.0 | SPRD HAL（gralloc、healthd charger 等） |
+| `prebuilts/gcc/linux-x86/arm/arm-eabi-4.8` | AOSP `platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8` | tag android-8.1.0_r81 | 內核編譯器；`scx35-common/BoardConfigCommon.mk` 的 `KERNEL_TOOLCHAIN` 寫死此路徑，Android 9 manifest 已不含（缺少時 `TARGET_KERNEL_BINARIES` 失敗） |
 | `external/stlport` | `LineageOS/android_external_stlport` | lineage-15.1 | 舊 blobs 依賴的 libstlport；無 16.0 分支，上游 manifest 同樣用 15.1 |
 
 注意：`gtelwifiue`（SM-T560NU，高通 MSM8916）的倉庫不適用本機。

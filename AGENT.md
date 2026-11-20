@@ -128,6 +128,7 @@
    ```bash
    export USE_CCACHE=1
    export CCACHE_EXEC=/usr/bin/ccache
+   export OMP_NUM_THREADS=6   # Lineage 內核編譯使用 -j$(nproc)，以此壓到 6
    make -j6 bacon 2>&1 | tee build.log
    ```
 3. 若編譯過程中發生任何錯誤，請讀取 `build.log` 尾端分析原因，修復對應的 Makefile、C/C++ 程式碼、SELinux 規則或依賴缺失，將修改紀錄同步更新至 `Readme_Architecture.md`，然後接續編譯直到成功產出 `out/target/product/gtelwifi/lineage-16.0-*-gtelwifi.zip`。

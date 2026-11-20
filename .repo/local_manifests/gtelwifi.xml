@@ -7,6 +7,8 @@
   <project path="kernel/samsung/gtel3g" name="gtel3g/android_kernel_samsung_gtel3g" remote="github" revision="lineage-16.0" clone-depth="1" />
   <project path="device/samsung/scx35-common" name="gtel3g/android_device_samsung_scx35-common" remote="github" revision="lineage-16.0" clone-depth="1" />
   <project path="hardware/sprd" name="gtel3g/android_hardware_sprd" remote="github" revision="lineage-16.0" clone-depth="1" />
+  <!-- scx35-common KERNEL_TOOLCHAIN 指定 arm-eabi-4.8；Android 9 已移除，取 AOSP 8.1 最後版本 -->
+  <project path="prebuilts/gcc/linux-x86/arm/arm-eabi-4.8" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8" remote="aosp" revision="refs/tags/android-8.1.0_r81" clone-depth="1" />
   <!-- stlport 無 lineage-16.0 分支，上游 gtel3g manifest 亦使用 15.1 -->
   <project path="external/stlport" name="LineageOS/android_external_stlport" remote="github" revision="lineage-15.1" clone-depth="1" />
 </manifest>
