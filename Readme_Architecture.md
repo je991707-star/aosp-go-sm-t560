@@ -31,6 +31,11 @@
 
 `device/samsung/gtelwifi/BoardConfig.mk` 的 `TARGET_OTA_ASSERT_DEVICE := SM-T560,gtelwifi,gtelwifixx,gtel3g`：刷機包 updater-script 只接受這些 `ro.product.device`；常見的 SM-T560 用 TWRP 是 gtel3g（SM-T561）版本，回報 `gtel3g`，未列入時刷機會以 E3004 / Error 7 中止。
 
+## 顯示與系統屬性（`device/samsung/gtelwifi/system.prop`）
+- 由 `BoardConfig.mk` 的 `TARGET_SYSTEM_PROP += device/samsung/gtelwifi/system.prop` 掛入（`scx35-common` 已先 `+=` 自己的 system.prop，所以預設的裝置 system.prop 不會自動套用，必須明確加入）。
+- `ro.sf.lcd_density=213`、`ro.sf.lcd_width=129`、`ro.sf.lcd_height=207`（與 gtel3g 相同面板）。未設定時 SurfaceFlinger 會採用 SPRD hwcomposer 回報的錯誤 DPI（20320），所有 dp 被放大到畫面外，開機後只看得到設定精靈的背景色（白畫面）。
+- `ro.config.swappiness=100`、`ro.config.zram.disksize=512M`：供 `scx35-common/system/etc/init/swap.rc` 設定 zram；未設定時 zram 不會啟用（Swap 0）。
+
 ## 記憶體 / 輕量化策略
 - `scx35-common/common.mk` 設定 `ro.config.low_ram=false`、`ro.statsd.enable=false`，並以 `PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK`、`PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false`、`PRODUCT_MINIMIZE_JAVA_DEBUG_INFO` 縮小 ART 佔用；dalvik heap 用 `tablet-7in-hdpi-1024-dalvik-heap.mk`，另有 zram（`swap.rc`）。
 - **不繼承 `go_defaults.mk`**：上游 `d2df462` 已移除 `go_defaults_512.mk`（Go 的 LMK/ART/dexopt 政策針對 512MB 機種），`71f291b` 為保留傳統多工畫面而覆寫 low_ram。Android 9 中 `low_ram=true` 另會讓 `NotificationManagerService` 停用第三方通知監聽/管理服務（`canUseManagedServices`）、Settings 隱藏特殊存取權項目並改用 Go 版多工畫面；它不會隱藏熱點選單（Wi-Fi 服務只用來縮小 log 緩衝）。
