@@ -34,6 +34,7 @@
   - `kernel/samsung/gtel3g/`（SC7730SE 核心，內含 `gtelwifi_defconfig`）
   - `vendor/samsung/gtelwifi/`
   - `hardware/sprd/`
+  - `frameworks/opt/net/wifi/service/java/com/android/server/wifi/`（僅 Wi-Fi/SoftAP 介面切換相關修改）
   - 專案根目錄文件（`CLAUDE.md`、`AGENT.md`、`Readme_Architecture.md`、`.gitignore`）
 - **Git Commit 安全原則**：
   - 依照 `CLAUDE.md` 執行 git commit 時，**絕對不可**在原始碼根目錄對整個原始碼樹或 `out/` 執行 `git add .`。
