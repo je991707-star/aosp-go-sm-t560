@@ -29,6 +29,8 @@
 
 注意：`gtelwifiue`（SM-T560NU，高通 MSM8916）的倉庫不適用本機。
 
+`device/samsung/gtelwifi/BoardConfig.mk` 的 `TARGET_OTA_ASSERT_DEVICE := SM-T560,gtelwifi,gtelwifixx,gtel3g`：刷機包 updater-script 只接受這些 `ro.product.device`；常見的 SM-T560 用 TWRP 是 gtel3g（SM-T561）版本，回報 `gtel3g`，未列入時刷機會以 E3004 / Error 7 中止。
+
 ## 記憶體 / 輕量化策略
 - `scx35-common/common.mk` 設定 `ro.config.low_ram=false`、`ro.statsd.enable=false`，並以 `PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK`、`PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false`、`PRODUCT_MINIMIZE_JAVA_DEBUG_INFO` 縮小 ART 佔用；dalvik heap 用 `tablet-7in-hdpi-1024-dalvik-heap.mk`，另有 zram（`swap.rc`）。
 - **不繼承 `go_defaults.mk`**：上游 `d2df462` 已移除 `go_defaults_512.mk`（Go 的 LMK/ART/dexopt 政策針對 512MB 機種），`71f291b` 為保留傳統多工畫面而覆寫 low_ram。Android 9 中 `low_ram=true` 另會讓 `NotificationManagerService` 停用第三方通知監聽/管理服務（`canUseManagedServices`）、Settings 隱藏特殊存取權項目並改用 Go 版多工畫面；它不會隱藏熱點選單（Wi-Fi 服務只用來縮小 log 緩衝）。
