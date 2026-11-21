@@ -1,6 +1,8 @@
 # SM-T560 (gtelwifi) LineageOS 16.0 Go + SoftAP 專案架構
 
 ## 根目錄（本 git 倉庫追蹤範圍）
+- `LICENSE`：MIT，僅涵蓋本倉庫的文件與 patch；README「授權」段說明 AOSP（Apache 2.0）、內核（GPLv2）與 vendor blobs 各自的授權。
+- GitHub Releases：發佈 `make bacon` 產出的刷機包與 `.sha256` 校驗檔，tag 以刷機包日期命名。
 - `README.md`：GitHub 首頁說明（裝置、修改摘要、測試結果、已知限制、編譯與刷機步驟），細節連回本文件。
 - `CLAUDE.md`：專案規則（繁中回應、todo、更動須同步本文件並 commit）。
 - `AGENT.md`：執行環境（`distrobox enter aosp8`）、硬體限制（`-j6`、`ccache 30G`）、搜尋範圍與分階段目標。

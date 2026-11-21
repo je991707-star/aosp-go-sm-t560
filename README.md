@@ -81,9 +81,15 @@ make -j6 bacon
 
 ## 刷機
 
+已編譯好的刷機包（userdebug、test-keys 簽章）在 [Releases](https://github.com/je991707-star/aosp-go-sm-t560/releases)，下載後請核對 SHA-256。
+
 1. 刷入 TWRP（gtel3g 版本可用，回報代號 `gtel3g`）。
 2. 第一次刷：Wipe → Advanced Wipe 清除 Dalvik/ART Cache、Cache、System、Data。
 3. 刷入 zip，重新開機。第一次開機約 5–10 分鐘。
+
+## 授權
+
+本倉庫的文件與 patch 以 [MIT](LICENSE) 授權。編譯所用的原始碼與檔案各自保有原授權：LineageOS / AOSP 多為 Apache 2.0，Linux 內核為 GPLv2（原始碼見 [`gtel3g/android_kernel_samsung_gtel3g`](https://github.com/gtel3g/android_kernel_samsung_gtel3g) `lineage-16.0` 分支），三星閉源 vendor blobs 的權利屬原廠所有。
 
 ## 致謝
 
