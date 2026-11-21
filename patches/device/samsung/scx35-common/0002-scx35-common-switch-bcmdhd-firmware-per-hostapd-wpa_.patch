@@ -1,0 +1,45 @@
+From 04acfc117912e7c36ebf3d1ab7e0b58803e43e0c Mon Sep 17 00:00:00 2001
+From: je991707-star <je.991707@gmail.com>
+Date: Sat, 21 Nov 2026 13:20:51 +0800
+Subject: [PATCH 2/2] scx35-common: switch bcmdhd firmware per
+ hostapd/wpa_supplicant start
+
+No vendor Wi-Fi HAL is registered, so nothing switched to the AP
+firmware and hostapd came up on the Station/P2P image without beacons.
+Write firmware_path from init when either service starts; bcmdhd picks
+HOSTAP mode when the path contains "_apsta".
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Change-Id: I0a9e6aa05a1341a9719eb00587993390e25ea36c
+---
+ rootdir/init.wifi.rc | 8 ++++++++
+ sepolicy/init.te     | 1 +
+ 2 files changed, 9 insertions(+)
+ create mode 100644 sepolicy/init.te
+
+diff --git a/rootdir/init.wifi.rc b/rootdir/init.wifi.rc
+index 1615bd8..4ca1336 100644
+--- a/rootdir/init.wifi.rc
++++ b/rootdir/init.wifi.rc
+@@ -40,3 +40,11 @@ on property:init.svc.macloader=stopped
+     chown system root /data/.rev
+     chmod 0664 /data/.rev
+ # end of WiFi MFG (TestMode)
++
++# No vendor Wi-Fi HAL switches firmware here, so pick it per service before
++# the driver powers up (bcmdhd enters HOSTAP mode when the path has "_apsta").
++on property:init.svc.hostapd=running
++    write /sys/module/dhd/parameters/firmware_path /vendor/etc/wifi/bcmdhd_apsta.bin
++
++on property:init.svc.wpa_supplicant=running
++    write /sys/module/dhd/parameters/firmware_path /vendor/etc/wifi/bcmdhd_sta.bin
+diff --git a/sepolicy/init.te b/sepolicy/init.te
+new file mode 100644
+index 0000000..b2e6554
+--- /dev/null
++++ b/sepolicy/init.te
+@@ -0,0 +1 @@
++allow init sysfs_wlan_fwpath:file w_file_perms;
+-- 
+2.17.1
+

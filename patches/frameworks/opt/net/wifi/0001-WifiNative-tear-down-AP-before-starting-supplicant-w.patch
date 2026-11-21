@@ -1,0 +1,38 @@
+From f9d9ee5ef03a2f55435cc4066ef5ba9d80415b13 Mon Sep 17 00:00:00 2001
+From: je991707-star <je.991707@gmail.com>
+Date: Sat, 21 Nov 2026 13:38:37 +0800
+Subject: [PATCH] WifiNative: tear down AP before starting supplicant without
+ vendor HAL
+
+Without the vendor HAL, enabling Wi-Fi while SoftAP is up started
+wpa_supplicant on the still-powered AP chip and only then tore down the
+AP iface. hostapd teardown powered the chip off, leaving the new STA
+with wlan0 down. Tear the AP iface down first so supplicant powers the
+chip back up in station mode.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Change-Id: I6245bc4bcd3d0dd9dbfc958b4a57b49bf3414320
+---
+ service/java/com/android/server/wifi/WifiNative.java | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/service/java/com/android/server/wifi/WifiNative.java b/service/java/com/android/server/wifi/WifiNative.java
+index bc599c1..70d4354 100644
+--- a/service/java/com/android/server/wifi/WifiNative.java
++++ b/service/java/com/android/server/wifi/WifiNative.java
+@@ -852,6 +852,12 @@ public class WifiNative {
+                 mWifiMetrics.incrementNumSetupClientInterfaceFailureDueToHal();
+                 return null;
+             }
++            // Without the vendor HAL nothing orders the iface switch: tear down an active AP
++            // before supplicant starts, or hostapd's teardown powers the chip off under the STA.
++            String apIfaceName = mIfaceMgr.findAnyApIfaceName();
++            if (!mWifiVendorHal.isVendorHalSupported() && apIfaceName != null) {
++                teardownInterface(apIfaceName);
++            }
+             if (!startSupplicant()) {
+                 Log.e(TAG, "Failed to start supplicant");
+                 mWifiMetrics.incrementNumSetupClientInterfaceFailureDueToSupplicant();
+-- 
+2.17.1
+

@@ -4,6 +4,7 @@
 !/CLAUDE.md
 !/AGENT.md
 !/Readme_Architecture.md
+!/patches/
 !/.repo/
 /.repo/*
 !/.repo/local_manifests/

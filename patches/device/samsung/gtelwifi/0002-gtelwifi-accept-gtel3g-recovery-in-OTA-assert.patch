@@ -1,0 +1,30 @@
+From a0f9624c433d799e42db3d3336b4d14773d3bff9 Mon Sep 17 00:00:00 2001
+From: je991707-star <je.991707@gmail.com>
+Date: Sat, 21 Nov 2026 12:44:19 +0800
+Subject: [PATCH 2/3] gtelwifi: accept gtel3g recovery in OTA assert
+
+TWRP builds commonly used on SM-T560 are gtel3g (SM-T561) builds and
+report ro.product.device=gtel3g, which aborted install with E3004.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Change-Id: I77b52390fa3a5abbb7c46ebc1e18d75b46ed7f5b
+---
+ BoardConfig.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/BoardConfig.mk b/BoardConfig.mk
+index 0df8882..7721695 100644
+--- a/BoardConfig.mk
++++ b/BoardConfig.mk
+@@ -73,7 +73,7 @@ TARGET_SCREEN_HEIGHT := 1280
+ TARGET_SCREEN_WIDTH := 800
+ 
+ # Assert
+-TARGET_OTA_ASSERT_DEVICE := SM-T560,gtelwifi,gtelwifixx
++TARGET_OTA_ASSERT_DEVICE := SM-T560,gtelwifi,gtelwifixx,gtel3g
+ 
+ # Graphics
+ # SPRD HWC does not request framebuffer dithering on gtel3g.
+-- 
+2.17.1
+

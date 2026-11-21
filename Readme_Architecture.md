@@ -5,6 +5,7 @@
 - `AGENT.md`：執行環境（`distrobox enter aosp8`）、硬體限制（`-j6`、`ccache 30G`）、搜尋範圍與分階段目標。
 - `.gitignore`：白名單模式，忽略一切後只放行根目錄文件與 `.repo/local_manifests/`，原始碼樹、`out/`、`build.log`、`sync.log` 都不追蹤。
 - `.repo/local_manifests/gtelwifi.xml`：裝置相關倉庫清單（見下）。
+- `patches/<子倉庫路徑>/`：各子倉庫 `gtelwifi-go` 分支相對上游的修改，以 `git format-patch m/lineage-16.0..gtelwifi-go` 匯出（`device/samsung/gtelwifi` 3 個、`device/samsung/scx35-common` 2 個、`frameworks/opt/net/wifi` 1 個）。從零重建時：依「原始碼基底」`repo init`、放入 local manifest、`repo sync` 後，在各子倉庫執行 `repo start gtelwifi-go .` 與 `git am <根目錄>/patches/<子倉庫路徑>/*.patch`。子倉庫修改後需重新匯出 patch。
 
 ## 原始碼基底
 - `repo init -u https://github.com/LineageOS/android.git -b lineage-16.0 --depth=1`（Android 9，AOSP tag `android-9.0.0_r46`）。
