@@ -1,6 +1,7 @@
 # SM-T560 (gtelwifi) LineageOS 16.0 Go + SoftAP 專案架構
 
 ## 根目錄（本 git 倉庫追蹤範圍）
+- `README.md`：GitHub 首頁說明（裝置、修改摘要、測試結果、已知限制、編譯與刷機步驟），細節連回本文件。
 - `CLAUDE.md`：專案規則（繁中回應、todo、更動須同步本文件並 commit）。
 - `AGENT.md`：執行環境（`distrobox enter aosp8`）、硬體限制（`-j6`、`ccache 30G`）、搜尋範圍與分階段目標。
 - `.gitignore`：白名單模式，忽略一切後只放行根目錄文件與 `.repo/local_manifests/`，原始碼樹、`out/`、`build.log`、`sync.log` 都不追蹤。
