@@ -45,7 +45,10 @@
 - `BoardConfig.mk`：`BOARD_WLAN_DEVICE := bcmdhd`、`BOARD_WLAN_DEVICE_REV := bcm4343`、wpa_supplicant/hostapd 皆 NL80211 + `lib_driver_cmd_bcmdhd`，STA/AP 韌體路徑 `/vendor/etc/wifi/bcmdhd_{sta,apsta}.bin`，切換參數 `/sys/module/dhd/parameters/firmware_path`。
 - 本機沒有獨立 vendor 分割區，`vendor/samsung/gtelwifi/gtelwifi-vendor-blobs.mk` 把韌體複製到 `system/vendor/etc/wifi/`，執行時 `/vendor` 指向 `/system/vendor`，與上述路徑一致。
 - `scx35-common/common.mk` 提供 `wpa_supplicant`、`wpa_supplicant.conf`、`hostapd`；`hidl.mk` 提供 `android.hardware.wifi@1.0-service`；`rootdir/init.wifi.rc` 將 `firmware_path` chown 給 wifi。
-- `scx35-common/sepolicy/genfs_contexts`：`/module/dhd/parameters/firmware_path` 標為 `sysfs_wlan_fwpath`（平台只標記 `/module/wlan/parameters/fwpath`），讓 `hal_wifi` 在 enforcing 下可寫入以切換 AP 韌體。
+- 裝置 HIDL manifest（`scx35-common/configs/manifest.xml`）沒有註冊 `android.hardware.wifi@1.0::IWifi`，框架以「Vendor HAL not supported」模式運作，HAL 的韌體切換（`DriverTool::ChangeFirmwareMode`）不會執行。舊版 bcmdhd（1.141，Linux 3.10）沒有 nl80211 vendor 事件群組，因此不註冊 HAL。
+- 兩套韌體：`bcmdhd_sta.bin` 為 7.119.3「Station/P2P」（無法建立 AP，hostapd 雖回報 AP-ENABLED 但驅動 `device role select failed`、無 beacon）；`bcmdhd_apsta.bin` 為 7.10.323.56「SoftAP」。驅動 `dhd_get_fw_mode()` 在路徑含 `_apsta` 時進入 HOSTAP 模式，且每次上電重新讀取 `firmware_path`。
+- `scx35-common/rootdir/init.wifi.rc`：`on property:init.svc.hostapd=running` 寫入 apsta 路徑、`on property:init.svc.wpa_supplicant=running` 寫回 sta 路徑；服務啟動到 `wl_android_wifi_on` 約 70–110ms，觸發一定先完成。
+- `scx35-common/sepolicy/genfs_contexts`：`/module/dhd/parameters/firmware_path` 標為 `sysfs_wlan_fwpath`（平台只標記 `/module/wlan/parameters/fwpath`）；`scx35-common/sepolicy/init.te` 允許 init 寫入 `sysfs_wlan_fwpath`。
 - `gtelwifi/overlay/frameworks/base/core/res/res/values/config.xml`：`config_tether_wifi_regexs` = `wlan0`、`softap0`；`config_tether_upstream_types`（`integer-array`）= 0, 1, 5, 7。gtelwifi overlay 在 `DEVICE_PACKAGE_OVERLAYS` 中排在 scx35-common 之前，優先生效。
 - `gtelwifi.mk`：`net.tethering.noprovisioning=true`（跳過電信商熱點授權檢查）。
 - `gtelwifi.mk` 繼承 `hardware/broadcom/wlan/bcmdhd/config/config-bcm.mk`。
