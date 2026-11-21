@@ -5,7 +5,7 @@
 - GitHub Releases：發佈 `make bacon` 產出的刷機包與 `.sha256` 校驗檔，tag 以刷機包日期命名。
 - `README.md`：GitHub 首頁說明（裝置、修改摘要、測試結果、已知限制、編譯與刷機步驟），細節連回本文件。
 - `CLAUDE.md`：專案規則（繁中回應、todo、更動須同步本文件並 commit）。
-- `AGENT.md`：執行環境（`distrobox enter aosp8`）、硬體限制（`-j6`、`ccache 30G`）、搜尋範圍與分階段目標。
+- `AGENT.md`：執行環境（`distrobox enter aosp8`）、硬體限制（`-j6`、`ccache 30G`）、搜尋範圍與分階段目標。本機已移除原始碼樹、`out/`、`~/.ccache` 與 `aosp8` 容器，工作目錄只剩本倉庫追蹤的檔案；要再編譯須依 AGENT.md 的工具清單重建 Ubuntu 18.04 容器，再依 `patches/` 說明從零同步。
 - `.gitignore`：白名單模式，忽略一切後只放行根目錄文件與 `.repo/local_manifests/`，原始碼樹、`out/`、`build.log`、`sync.log` 都不追蹤。
 - `.repo/local_manifests/gtelwifi.xml`：裝置相關倉庫清單（見下）。
 - `patches/<子倉庫路徑>/`：各子倉庫 `gtelwifi-go` 分支相對上游的修改，以 `git format-patch m/lineage-16.0..gtelwifi-go` 匯出（`device/samsung/gtelwifi` 3 個、`device/samsung/scx35-common` 2 個、`frameworks/opt/net/wifi` 1 個）。從零重建時：依「原始碼基底」`repo init`、放入 local manifest、`repo sync` 後，在各子倉庫執行 `repo start gtelwifi-go .` 與 `git am <根目錄>/patches/<子倉庫路徑>/*.patch`。子倉庫修改後需重新匯出 patch。
